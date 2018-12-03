@@ -14,7 +14,7 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "version": "0.0.1",
+    "version": "1.0",
     "autoload": {
         "psr-4": {
             "Shasoft\\Console\\": "src"
