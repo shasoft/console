@@ -4,6 +4,7 @@
     "require": {
     },
 	"homepage": "http://shasoft.com",
+    "keywords": ["console", "output", "color text","colors"],
     "license": "MIT",
     "authors": [
         {
