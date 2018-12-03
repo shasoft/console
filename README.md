@@ -32,4 +32,4 @@ Console::red()->green()->writeln('Красный текст на зеленом 
 
 ## Подробнее
 
-Более детально смотрите на [сайте](http://shasoft.com)
+Более детально смотрите на [сайте](http://shasoft.com/article/vyvod_v_konsol_tsvetnogo_teksta)
