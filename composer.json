@@ -1,0 +1,24 @@
+{
+    "name": "shasoft/console",
+    "description": "Shasoft Console",
+    "require": {
+    },
+	"homepage": "http://shasoft.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Valery Shabanov",
+            "email": "dev@shasoft.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "version": "0.0.1",
+    "autoload": {
+        "psr-4": {
+            "Shasoft\\Console\\": "src"
+        }
+    },
+    "extra": {
+    }
+}
