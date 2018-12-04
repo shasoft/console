@@ -38,7 +38,8 @@ class Output {
 	protected $defColors;
 	/**
 	 * Установить пробельный символ
-	 * @param string $space Пробельный символ
+	 * @param string $color Цвет текста
+	  * @param string $bgcolor Цвет фона
 	 */	
 	public function setDefault($color,$bgcolor) {
 		$this->defColors = [$color,$bgcolor];
@@ -121,33 +122,59 @@ class Output {
 	protected $buffer = '';
 	/**
 	 * Вывести строку
-	 * @param array $args Строки для вывода
+	 * @param array $args Значения для вывода
 	 * @return \Shasoft\Output\Output Указатель на вывод
 	 */
 	public function write(...$args) {
-		$str = '';
-		foreach($args as $arg) {
-			$str .= $this->_val2str($arg);
-		}
-		// Добавим стрку к буферу
-		$this->buffer .= $str;
-		// Разделим буфер по строкам
-		$lines = explode("\n",$this->buffer);
-		// Последнюю строку вернём в буфер (может в эту строку ещё что-то будут выводить)
-		$this->buffer = array_pop($lines);
-		// Отступ в пробелах
-		$spaces = str_repeat($this->space,$this->ident*$this->tab);
-		// Выведем все остальные строки
+		// Нужно выводить?
 		if( $this->isOutput() ) {
+			// Преобразуем все значения в строку
+			$str = '';
+			foreach($args as $arg) {
+				$str .= $this->_val2str($arg);
+			}
+			// Добавим стрку к буферу
+			$this->buffer .= $str;
+			// Разделим буфер по строкам
+			$lines = explode("\n",$this->buffer);
+			// Последнюю строку вернём в буфер (может в эту строку ещё что-то будут выводить)
+			$this->buffer = array_pop($lines);
+			// Отступ в пробелах
+			$spaces = str_repeat($this->space,$this->ident*$this->tab);
 			foreach($lines as $i=>$line) {
 				echo "\n".$spaces.$line;
 			}
 		}
 		return $this;
 	}
+	/**
+	 * write+enter()
+	 * @param array $args Значения для вывода
+	 * @return \Shasoft\Output\Output Указатель на вывод
+	 */
 	public function writeln(...$args) {
 		call_user_func_array([$this,'write'],$args);
 		return $this->enter();
+	}
+	/**
+	 * Трансформировать значение в строку для вывода
+	 * @param mixed $val Значение для трансформации
+	 * @return string Строковое представление
+	 */
+	protected function _val2str($val) {
+		$ret = $val;
+		if( !is_string($val) ) {
+			if( is_callable($val) ) {
+				$ret = 'callable::';
+			} else if( is_resource($val) ) {
+				$ret = get_resource_type($val);
+			//} else if( is_object($val) ) {
+				//$ret = get_resource_type($val);
+			} else {
+				$ret = @var_export($val,true);
+			}
+		}
+		return $ret;
 	}
 	/**
 	 * @var array Цвет текста
@@ -252,26 +279,6 @@ class Output {
 		return $this;
 	}	
 	/**
-	 * Трансформировать значение в строку для вывода
-	 * @param mixed $val Значение для трансформации
-	 * @return string Строковое представление
-	 */
-	protected function _val2str($val) {
-		$ret = $val;
-		if( !is_string($val) ) {
-			if( is_callable($val) ) {
-				$ret = 'callable::';
-			} else if( is_resource($val) ) {
-				$ret = get_resource_type($val);
-			//} else if( is_object($val) ) {
-				//$ret = get_resource_type($val);
-			} else {
-				$ret = @var_export($val,true);
-			}
-		}
-		return $ret;
-	}
-	/*
      * Тестовый вывод всех цветов
 	 */
 	public function show_colors() {	
@@ -315,6 +322,9 @@ class Output {
 	}
 	/**
 	 * Магический метод для перехвата вызова всех функций и если указан цвет, то вызов соответствующей функции
+	 * @param string $name Имя функции
+	 * @param array $arguments Аргументы
+	 * @see \Shasoft\Console\Output
 	 **/
 	public function __call( string $name, array $arguments ) {
 		$color = strtolower($name);
@@ -331,6 +341,6 @@ class Output {
 				return $this->color($color);
 			}
 		}
-		return 1/ 0 ;
+		return $this;
 	}
 }
