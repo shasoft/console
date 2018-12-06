@@ -83,7 +83,7 @@ class Output {
 	/**
 	 * @var integer Отступ (задается в табуляторах)
 	 */	
-	protected $ident = 0;
+	protected $indent = 0;
 	/**
 	 * Установить/получить значение размера табулятора. 
 	 *
@@ -94,16 +94,16 @@ class Output {
 	 * @param null|true $abs optional Значение $delta нужно установить как новое значение
 	 * @return integer|\Shasoft\Output\Output Значение отсутпа или указатель на вывод (для случая если идет изменение значения отступа)
 	 */	
-	public function ident($delta=null,$abs=null) {
+	public function indent($delta=null,$abs=null) {
 		if( !is_null($delta) ) {
 			if( !is_null($abs) && $abs===true ) {
-				$this->ident = $delta;
+				$this->indent = $delta;
 			} else {
-				$this->ident += $delta;
+				$this->indent += $delta;
 			}
 			return $this;
 		}
-		return $this->ident;
+		return $this->indent;
 	}
 	/**
 	 * Закончить вывод строки
@@ -140,7 +140,7 @@ class Output {
 			// Последнюю строку вернём в буфер (может в эту строку ещё что-то будут выводить)
 			$this->buffer = array_pop($lines);
 			// Отступ в пробелах
-			$spaces = str_repeat($this->space,$this->ident*$this->tab);
+			$spaces = str_repeat($this->space,$this->indent*$this->tab);
 			foreach($lines as $i=>$line) {
 				echo "\n".$spaces.$line;
 			}
