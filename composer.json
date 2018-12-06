@@ -3,7 +3,7 @@
     "description": "Shasoft Console",
     "require": {
     },
-	"homepage": "http://shasoft.com/article/klass_php_dlya_vyvod_v_konsol_tsvetnogo_teksta",
+	"homepage": "http://shasoft.com/article/klass_php_dlya_vyvoda_v_konsol_tsvetnogo_teksta",
     "keywords": ["console", "output", "color","text","colors"],
     "license": "MIT",
     "authors": [
