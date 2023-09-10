@@ -1,23 +1,29 @@
 {
     "name": "shasoft/console",
     "description": "Shasoft Console",
-    "require": {
-    },
-	"homepage": "http://shasoft.com/article/klass_php_dlya_vyvoda_v_konsol_tsvetnogo_teksta",
-    "keywords": ["console", "output", "color","text","colors"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Valery Shabanov",
-            "email": "dev@shasoft.com"
-        }
+    "keywords": [
+        "console",
+        "output",
+        "color",
+        "text",
+        "colors",
+        "process"
     ],
-    "minimum-stability": "dev",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Shasoft\\Console\\": "src"
+            "Shasoft\\Console\\": "classes"
         }
     },
-    "extra": {
-    }
+    "require": {
+        "illuminate/support": "*",
+        "symfony/console": "*",
+        "symfony/process": "*"
+    },
+    "authors": [
+        {
+            "name": "Shabanov Valera",
+            "email": "shasoft_console@shasoft.com"
+        }
+    ]
 }
