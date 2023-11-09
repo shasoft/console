@@ -1,0 +1,29 @@
+{
+    "name": "shasoft/console",
+    "description": "Shasoft Console",
+    "keywords": [
+        "console",
+        "output",
+        "color",
+        "text",
+        "colors",
+        "process"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shasoft\\Console\\": "classes"
+        }
+    },
+    "require": {
+        "illuminate/support": "*",
+        "symfony/console": "*",
+        "symfony/process": "*"
+    },
+    "authors": [
+        {
+            "name": "Shabanov Valera",
+            "email": "shasoft_console@shasoft.com"
+        }
+    ]
+}
