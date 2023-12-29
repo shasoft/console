@@ -23,31 +23,35 @@ class Console
     public static function write(string $text): void
     {
         if (self::$enable) {
-            if (self::$output === false) {
-                self::$output = new \Symfony\Component\Console\Output\ConsoleOutput();
-                // Добавить стиль вывода файла
-                $outputStyle = new OutputFormatterStyle('black', 'cyan');
-                self::$output->getFormatter()->setStyle('file', $outputStyle);
-                // Добавить стиль вывода класса
-                $outputStyle = new OutputFormatterStyle('black', 'yellow');
-                self::$output->getFormatter()->setStyle('class', $outputStyle);
-                // Добавить стиль вывода заголовка
-                $outputStyle = new OutputFormatterStyle('magenta', null, ['bold']);
-                self::$output->getFormatter()->setStyle('title', $outputStyle);
-                // Добавить стиль вывода описания
-                $outputStyle = new OutputFormatterStyle('blue', null, ['bold']);
-                self::$output->getFormatter()->setStyle('desc', $outputStyle);
-                // Добавить стиль вывода текста
-                $outputStyle = new OutputFormatterStyle('white', null, ['bold']);
-                self::$output->getFormatter()->setStyle('text', $outputStyle);
-                // Ok
-                $outputStyle = new OutputFormatterStyle('green', null, ['bold']);
-                self::$output->getFormatter()->setStyle('success', $outputStyle);
-                // Предупреждение
-                $outputStyle = new OutputFormatterStyle('yellow', null, ['bold']);
-                self::$output->getFormatter()->setStyle('warning', $outputStyle);
+            if (self::is()) {
+                if (self::$output === false) {
+                    self::$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+                    // Установить стиль вывода файла
+                    $outputStyle = new OutputFormatterStyle('black', 'cyan');
+                    self::$output->getFormatter()->setStyle('file', $outputStyle);
+                    // Установить стиль вывода класса
+                    $outputStyle = new OutputFormatterStyle('black', 'yellow');
+                    self::$output->getFormatter()->setStyle('class', $outputStyle);
+                    // Установить стиль вывода заголовка
+                    $outputStyle = new OutputFormatterStyle('magenta', null, ['bold']);
+                    self::$output->getFormatter()->setStyle('title', $outputStyle);
+                    // Установить стиль вывода описания
+                    $outputStyle = new OutputFormatterStyle('blue', null, ['bold']);
+                    self::$output->getFormatter()->setStyle('desc', $outputStyle);
+                    // Установить стиль вывода текста
+                    $outputStyle = new OutputFormatterStyle('white', null, ['bold']);
+                    self::$output->getFormatter()->setStyle('text', $outputStyle);
+                    // Ok
+                    $outputStyle = new OutputFormatterStyle('green', null, ['bold']);
+                    self::$output->getFormatter()->setStyle('success', $outputStyle);
+                    // Предупреждение
+                    $outputStyle = new OutputFormatterStyle('yellow', null, ['bold']);
+                    self::$output->getFormatter()->setStyle('warning', $outputStyle);
+                }
+                self::$output->write($text);
+            } else {
+                echo '<div style="border:1px red solid">' . htmlentities($text) . "</div>";
             }
-            self::$output->write($text);
         }
     }
     public static function writeLn(string $text)

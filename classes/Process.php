@@ -4,6 +4,20 @@ namespace Shasoft\Console;
 
 use Symfony\Component\Process\PhpExecutableFinder;
 
+if (!defined('STDIN')) {
+    //define('STDIN', fopen('php://stdin', 'r'));
+    define('STDIN', array("pipe", "r"));
+}
+if (!defined('STDOUT')) {
+    //define('STDOUT', fopen('php://output', 'w'));
+    define('STDOUT', array("pipe", "w"));
+}
+if (!defined('STDERR')) {
+    //define('STDERR', fopen('php://stderr', 'w'));
+    define('STDERR', array("pipe", "w"));
+}
+
+
 class Process
 {
     /**
@@ -38,6 +52,8 @@ class Process
         } else {
             $hStdout = array("pipe", "w");
         }
+        //s_dump(\STDIN, \STDOUT, \STDERR);
+        //s_dump($cmd);
         // Выполнить команду
         $handle = proc_open($cmd, array(0 => \STDIN, 1 => $hStdout, 2 => \STDERR), $pipes, $cwd);
         if ($handle == false) {
@@ -49,6 +65,7 @@ class Process
             while (true) {
                 // Читать статус
                 $meta_info = proc_get_status($handle);
+                //s_dump($meta_info);
                 // Процесс запущен?
                 if (!$meta_info['running']) {
                     // Закрыть
