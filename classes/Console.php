@@ -26,6 +26,9 @@ class Console
             if (self::is()) {
                 if (self::$output === false) {
                     self::$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+                    // Установить стиль вывода кода
+                    $outputStyle = new OutputFormatterStyle('cyan', 'black');
+                    self::$output->getFormatter()->setStyle('code', $outputStyle);
                     // Установить стиль вывода файла
                     $outputStyle = new OutputFormatterStyle('black', 'cyan');
                     self::$output->getFormatter()->setStyle('file', $outputStyle);

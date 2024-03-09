@@ -3,6 +3,8 @@
 namespace Shasoft\Console;
 
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process as SymfonyProcess;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 if (!defined('STDIN')) {
     //define('STDIN', fopen('php://stdin', 'r'));
@@ -34,8 +36,13 @@ class Process
      * @param string $path - директория для выполнения команды
      */
     protected static $asyncProc = [];
-    public static function exec(string $cmd, ?string $path = null, bool $synh = true, bool $outHead = true, bool $outBody = true): int
-    {
+    public static function exec(
+        string $cmd,
+        ?string $path = null,
+        bool $sync = true,
+        bool $outHead = true,
+        bool $outBody = true
+    ): int {
         $ret = 0;
         $cmd_exec = str_repeat('=', 90) . ' <fg=red>cmd_exec</> ';
         $cwd      = null;
@@ -46,6 +53,18 @@ class Process
             $cwd = realpath($path);
             if ($outHead) Console::writeLn('cwd: <file>' . $cwd . '</>');
         }
+        //
+        /*
+        $process = SymfonyProcess::fromShellCommandline($cmd, $path);
+        try {
+            $process->mustRun();
+
+            echo $process->getOutput();
+        } catch (ProcessFailedException $exception) {
+            echo $exception->getMessage();
+        }
+        //*/
+        //*
         // Выводить содержимое?
         if ($outBody) {
             $hStdout = \STDOUT;
@@ -61,31 +80,35 @@ class Process
             exit(1);
         }
         // Ждем завершения
-        if ($synh) {
+        if ($sync) {
             while (true) {
                 // Читать статус
                 $meta_info = proc_get_status($handle);
-                //s_dump($meta_info);
                 // Процесс запущен?
-                if (!$meta_info['running']) {
+                if (array_key_exists('running', $meta_info) && !$meta_info['running']) {
+                    //s_dump($meta_info);
                     // Закрыть
                     $ret = proc_close($handle);
+                    //s_dd($ret, $meta_info);
                     // Ожидание закончено
                     break;
                 }
-                // Ждать 1 секунду
-                sleep(1);
+                // Ждать 1 секунду sleep(1);
+                // Ждать 64 миллисекунды
+                usleep(64);
             }
             if ($outHead) Console::writeLn('--<title>cmd</> ' . $cmd);
             if ($outHead) Console::writeLn('<<' . $cmd_exec);
         } else {
             // Запустили асинхронно
             $meta_info = proc_get_status($handle);
+            s_dd($meta_info);
             self::$asyncProc[$meta_info['pid']] = [
                 'handle' => $handle,
                 'cmd' => $cmd
             ];
         }
+        //*/
         if ($outHead) Console::writeLn('ret: ' . var_export($ret, true));
         return $ret;
     }
